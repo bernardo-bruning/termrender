@@ -17,6 +17,10 @@ func (source Vector) Sub(target Vector) Vector {
 	return NewVector(source.X-target.X, source.Y-target.Y)
 }
 
+func (source Vector) Add(target Vector) Vector {
+	return NewVector(source.X+target.X, source.Y+target.Y)
+}
+
 func (target Vector) Len() float64 {
 	return math.Sqrt(math.Abs(target.X*target.X + target.Y*target.Y))
 }

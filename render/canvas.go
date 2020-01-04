@@ -21,7 +21,7 @@ func swap(v1 Vector, v2 Vector) (Vector, Vector) {
 	return v2, v1
 }
 
-func sortVectors(triangle Triangle) (Vector, Vector, Vector) {
+func sortVectorsByY(triangle Triangle) (Vector, Vector, Vector) {
 	a := triangle.a
 	b := triangle.b
 	c := triangle.c
@@ -42,7 +42,8 @@ func sortVectors(triangle Triangle) (Vector, Vector, Vector) {
 }
 
 func (canvas *Canvas) Triangle(triangle Triangle, color int) {
-	a, b, c := sortVectors(triangle)
+	a, b, c := sortVectorsByY(triangle)
+
 	canvas.Line(a, b, 1)
 	canvas.Line(b, c, 2)
 	canvas.Line(c, a, 3)
@@ -63,13 +64,11 @@ func (canvas *Canvas) SetPoint(position Vector, color int) {
 }
 
 func (canvas *Canvas) Line(source, target Vector, color int) {
-	vector := target.Sub(source)
-	len := vector.Len()
-	norm := vector.Normalize()
+	line := NewLine(source, target)
+	len := line.Len()
 	position := source
 	for i := 0.; i < len; i++ {
-		position.X = source.X + i*norm.X
-		position.Y = source.Y + i*norm.Y
+		position = line.Next(position)
 		canvas.SetPoint(position, color)
 	}
 }
