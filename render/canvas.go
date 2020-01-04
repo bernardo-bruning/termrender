@@ -58,9 +58,6 @@ func (canvas *Canvas) SetPoint(position Vector, color int) {
 		fmt.Println(position)
 		return
 	}
-	// if position.X >= 0 && position.Y >= 0 {
-	// 	return
-	// }
 	pointer := position.ToPointer()
 	canvas.inner.SetPoint(pointer, ui.Color(color))
 }
@@ -75,14 +72,4 @@ func (canvas *Canvas) Line(source, target Vector, color int) {
 		position.Y = source.Y + i*norm.Y
 		canvas.SetPoint(position, color)
 	}
-	// diff := source.Diff(target)
-	// min := source.Min(target)
-	// max := math.Max(diff.X, diff.Y)
-	// for i := 0.; i < max; i++ {
-	// 	x := min.X + (i/max)*diff.X
-	// 	y := min.Y + (i/max)*diff.Y
-	// 	if x >= 0 && y >= 0 {
-	// 		canvas.SetPoint(NewVector(x, y), color)
-	// 	}
-	// }
 }
