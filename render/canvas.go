@@ -45,22 +45,24 @@ func (canvas *Canvas) Triangle(triangle Triangle, color int) {
 
 	a, b, c := sortVectorsByY(triangle)
 
-	alpha := c.Sub(a).NormalizeY()
-	beta := b.Sub(a).NormalizeY()
-	teta := c.Sub(b).NormalizeY()
+	alpha := NewLine(a, c)
+	beta := NewLine(a, b)
+	teta := NewLine(b, c)
 
 	source := a
 	target := a
-	for y := a.Y; y < b.Y; y++ {
-		source = source.Add(alpha)
-	 	target = target.Add(beta)
-	 	canvas.Line(source, target, 5)
+	canvas.Line(source, target, color)
+
+	for y := 0.; y < beta.LenVertical(); y++ {
+		source = alpha.NextVertical(source)
+		target = beta.NextVertical(target)
+		canvas.Line(source, target, color)
 	}
 
-	for y := b.Y; y < c.Y; y++ {
-		source = source.Add(alpha)
-		target = target.Add(teta)
-		canvas.Line(source, target, 5)
+	for y := 0.; y < teta.LenVertical(); y++ {
+		source = alpha.NextVertical(source)
+		target = teta.NextVertical(target)
+		canvas.Line(source, target, color)
 	}
 
 	//canvas.Line(a, b, 1)

@@ -7,8 +7,8 @@ type Line struct {
 func NewLine(source, target Vector) Line {
 	vector := target.Sub(source)
 	normalization := vector.Normalize()
-	veticalNormalization := normalization.Mul(NewVector(0, 1))
-	horizontalNormalization := normalization.Mul(NewVector(1, 0))
+	veticalNormalization := vector.NormalizeY()
+	horizontalNormalization := vector.NormalizeX()
 	return Line{
 		vector:                  vector,
 		source:                  source,
@@ -25,6 +25,14 @@ func (line Line) Normalize() Vector {
 
 func (line Line) Len() float64 {
 	return line.vector.Len()
+}
+
+func (line Line) LenVertical() float64 {
+	return line.vector.Y
+}
+
+func (line Line) LenHorizontal() float64 {
+	return line.vector.X
 }
 
 func (line Line) Next(current Vector) Vector {
