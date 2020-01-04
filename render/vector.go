@@ -21,13 +21,29 @@ func (source Vector) Add(target Vector) Vector {
 	return NewVector(source.X+target.X, source.Y+target.Y)
 }
 
+func (source Vector) Mul(target Vector) Vector {
+	return NewVector(source.X*target.X, source.Y*target.Y)
+}
+
+func (source Vector) Div(target Vector) Vector {
+	return NewVector(source.X/target.Y, source.Y/target.Y)
+}
+
 func (target Vector) Len() float64 {
 	return math.Sqrt(math.Abs(target.X*target.X + target.Y*target.Y))
 }
 
 func (target Vector) Normalize() Vector {
 	len := target.Len()
-	return NewVector(target.X/len, target.Y/len)
+	return target.Div(NewVector(len, len))
+}
+
+func (target Vector) NormalizeY() Vector {
+	return target.Div(NewVector(target.Y, target.Y))
+}
+
+func (target Vector) NormalizeX() Vector {
+	return target.Div(NewVector(target.X, target.X))
 }
 
 func (target Vector) Invert() Vector {

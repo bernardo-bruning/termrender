@@ -42,11 +42,30 @@ func sortVectorsByY(triangle Triangle) (Vector, Vector, Vector) {
 }
 
 func (canvas *Canvas) Triangle(triangle Triangle, color int) {
+
 	a, b, c := sortVectorsByY(triangle)
 
-	canvas.Line(a, b, 1)
-	canvas.Line(b, c, 2)
-	canvas.Line(c, a, 3)
+	alpha := c.Sub(a).NormalizeY()
+	beta := b.Sub(a).NormalizeY()
+	teta := c.Sub(b).NormalizeY()
+
+	source := a
+	target := a
+	for y := a.Y; y < b.Y; y++ {
+		source = source.Add(alpha)
+	 	target = target.Add(beta)
+	 	canvas.Line(source, target, 5)
+	}
+
+	for y := b.Y; y < c.Y; y++ {
+		source = source.Add(alpha)
+		target = target.Add(teta)
+		canvas.Line(source, target, 5)
+	}
+
+	//canvas.Line(a, b, 1)
+	//canvas.Line(b, c, 2)
+	//canvas.Line(c, a, 3)
 }
 
 func (canvas *Canvas) Size() Vector {
