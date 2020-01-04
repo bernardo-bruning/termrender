@@ -21,7 +21,7 @@ func swap(v1 Vector, v2 Vector) (Vector, Vector) {
 	return v2, v1
 }
 
-func (canvas *Canvas) Triangle(triangle Triangle, color int) {
+func sortVectors(triangle Triangle) (Vector, Vector, Vector) {
 	a := triangle.a
 	b := triangle.b
 	c := triangle.c
@@ -38,6 +38,11 @@ func (canvas *Canvas) Triangle(triangle Triangle, color int) {
 		b, c = swap(b, c)
 	}
 
+	return a, b, c
+}
+
+func (canvas *Canvas) Triangle(triangle Triangle, color int) {
+	a, b, c := sortVectors(triangle)
 	canvas.Line(a, b, 1)
 	canvas.Line(b, c, 2)
 	canvas.Line(c, a, 3)
