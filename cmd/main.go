@@ -8,7 +8,10 @@ func main() {
 	render.Init()
 	defer render.Close()
 	canvas := render.NewCanvas()
-	canvas.Triangle(render.NewTriangle(render.Vector{10, 10}, render.Vector{15, 10}, render.Vector{10, 30}), 1)
-	canvas.Triangle(render.NewTriangle(render.Vector{20, 20}, render.Vector{42, 24}, render.Vector{25, 39}), 1)
+	triangleA := render.NewTriangle(render.Vector{10, 10}, render.Vector{15, 10}, render.Vector{10, 30})
+	triangleB := render.NewTriangle(render.Vector{20, 20}, render.Vector{42, 24}, render.Vector{25, 39})
+	triangleA.Draw(canvas, 1)
+	triangleB.Draw(canvas, 1)
+
 	render.Render(canvas)
 }

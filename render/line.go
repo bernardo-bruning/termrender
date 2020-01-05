@@ -19,6 +19,14 @@ func NewLine(source, target Vector) Line {
 	}
 }
 
+func calculate(line Line) Line {
+	line.vector = line.target.Sub(line.source)
+	line.normalization = line.vector.Normalize()
+	line.veticalNormalization = line.vector.NormalizeY()
+	line.horizontalNormalization = line.vector.NormalizeX()
+	return line
+}
+
 func (line Line) Normalize() Vector {
 	return line.normalization
 }
@@ -45,4 +53,14 @@ func (line Line) NextVertical(current Vector) Vector {
 
 func (line Line) NextHorizontal(current Vector) Vector {
 	return current.Add(line.horizontalNormalization)
+}
+
+func (line Line) Draw(canvas *Canvas, color int) {
+	len := line.Len()
+	position := line.source
+	canvas.SetPoint(position, color)
+	for i := 0.; i < len-1; i++ {
+		position = line.Next(position)
+		canvas.SetPoint(position, color)
+	}
 }

@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-func Render(canvas Canvas) {
+func Render(canvas *Canvas) {
 	ui.Render(canvas.inner)
 
 	for e := range ui.PollEvents() {
