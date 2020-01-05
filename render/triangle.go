@@ -34,7 +34,7 @@ func sortVectorsByY(triangle Triangle) (Vector, Vector, Vector) {
 	return a, b, c
 }
 
-func (canvas *Canvas) lineSweeping(line Line, alpha, beta Line, color int) Line {
+func (line Line) lineSweeping(canvas Canvas, alpha, beta Line, color int) Line {
 	len := beta.LenVertical()
 
 	if len == 0 {
@@ -53,7 +53,7 @@ func (canvas *Canvas) lineSweeping(line Line, alpha, beta Line, color int) Line 
 	return line
 }
 
-func (triangle Triangle) Draw(canvas *Canvas, color int) {
+func (triangle Triangle) Draw(canvas Canvas, color int) {
 
 	a, b, c := sortVectorsByY(triangle)
 
@@ -62,8 +62,8 @@ func (triangle Triangle) Draw(canvas *Canvas, color int) {
 	teta := NewLine(b, c)
 
 	line := NewLine(a, a)
-	line = canvas.lineSweeping(line, alpha, beta, color)
-	canvas.lineSweeping(line, alpha, teta, color)
+	line = line.lineSweeping(canvas, alpha, beta, color)
+	line.lineSweeping(canvas, alpha, teta, color)
 
 	alpha.Draw(canvas, color)
 	beta.Draw(canvas, color)

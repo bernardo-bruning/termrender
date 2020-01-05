@@ -55,7 +55,7 @@ func (line Line) NextHorizontal(current Vector) Vector {
 	return current.Add(line.horizontalNormalization)
 }
 
-func (line Line) Draw(canvas *Canvas, color int) {
+func (line Line) Draw(canvas Canvas, color int) {
 	len := line.Len()
 	position := line.source
 	canvas.SetPoint(position, color)
