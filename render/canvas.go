@@ -41,6 +41,24 @@ func sortVectorsByY(triangle Triangle) (Vector, Vector, Vector) {
 	return a, b, c
 }
 
+func (canvas *Canvas) lineSweeping(source, target Vector, alpha, beta Line, color int) (Vector, Vector) {
+	len := beta.LenVertical()
+
+	if len == 0 {
+		target = beta.target
+		canvas.Line(source, target, color)
+		return source, target
+	}
+
+	for y := 0.; y < len; y++ {
+		source = alpha.NextVertical(source)
+		target = beta.NextVertical(target)
+		canvas.Line(source, target, color)
+	}
+
+	return source, target
+}
+
 func (canvas *Canvas) Triangle(triangle Triangle, color int) {
 
 	a, b, c := sortVectorsByY(triangle)
@@ -51,23 +69,12 @@ func (canvas *Canvas) Triangle(triangle Triangle, color int) {
 
 	source := a
 	target := a
-	canvas.Line(source, target, color)
+	source, target = canvas.lineSweeping(source, target, alpha, beta, color)
+	canvas.lineSweeping(source, target, alpha, teta, color)
 
-	for y := 0.; y < beta.LenVertical(); y++ {
-		source = alpha.NextVertical(source)
-		target = beta.NextVertical(target)
-		canvas.Line(source, target, color)
-	}
-
-	for y := 0.; y < teta.LenVertical(); y++ {
-		source = alpha.NextVertical(source)
-		target = teta.NextVertical(target)
-		canvas.Line(source, target, color)
-	}
-
-	//canvas.Line(a, b, 1)
-	//canvas.Line(b, c, 2)
-	//canvas.Line(c, a, 3)
+	canvas.Line(a, b, color)
+	canvas.Line(b, c, color)
+	canvas.Line(c, a, color)
 }
 
 func (canvas *Canvas) Size() Vector {
