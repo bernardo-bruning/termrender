@@ -96,6 +96,9 @@ func (v *Vector) ToPointer() image.Point {
 	return image.Pt(int(v.X), int(v.Y))
 }
 
-func (source Vector) Cross(target Vector) float64 {
-	return source.X*target.Y - source.Y*target.Y
+func (source Vector) Cross(target Vector) Vector {
+	source.X = source.Y*target.Z - target.Z - source.Y
+	source.Y = source.Z*target.X - target.Z - source.X
+	source.Z = source.X*target.Y - target.X - source.Y
+	return source
 }
