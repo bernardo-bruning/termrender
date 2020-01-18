@@ -53,6 +53,24 @@ func (line Line) lineSweeping(canvas Canvas, alpha, beta Line, color int) Line {
 	return line
 }
 
+func (triangle Triangle) Barycentric(point Vector) Vector {
+	v0 := triangle.b.Sub(triangle.a)
+	v1 := triangle.c.Sub(triangle.a)
+	v2 := point.Sub(triangle.a)
+
+	d00 := v0.Dot(v0)
+	d01 := v0.Dot(v1)
+	d11 := v1.Dot(v1)
+	d20 := v2.Dot(v0)
+	d21 := v2.Dot(v1)
+
+	denom := 1 / (d00*d11 - d01*d01)
+	v := (d11*d20 - d01*d21) * denom
+	w := (d00*d21 - d01*d20) * denom
+	u := 1 - v - w
+	return Vector{X: v, Y: w, Z: u}
+}
+
 func (triangle Triangle) Draw(canvas Canvas, color int) {
 
 	a, b, c := sortVectorsByY(triangle)
