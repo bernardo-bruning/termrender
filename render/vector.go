@@ -6,40 +6,44 @@ import (
 )
 
 type Vector struct {
-	X, Y float64
+	X, Y, Z float64
 }
 
-func NewVector(x float64, y float64) Vector {
-	return Vector{X: x, Y: y}
+func NewVectorFromScalar(scalar float64) Vector {
+	return Vector{X: scalar, Y: scalar, Z: scalar}
+}
+
+func NewVector(x float64, y float64, z float64) Vector {
+	return Vector{X: x, Y: y, Z: z}
 }
 
 func (source Vector) Sub(target Vector) Vector {
-	return NewVector(source.X-target.X, source.Y-target.Y)
+	return NewVector(source.X-target.X, source.Y-target.Y, source.Z-target.Z)
 }
 
 func (source Vector) Add(target Vector) Vector {
-	return NewVector(source.X+target.X, source.Y+target.Y)
+	return NewVector(source.X+target.X, source.Y+target.Y, source.Z+target.Z)
 }
 
-func (source Vector) MulEscalar(escalar float64) Vector {
-	return source.Mul(NewVector(escalar, escalar))
+func (source Vector) MulScalar(Scalar float64) Vector {
+	return source.Mul(NewVectorFromScalar(Scalar))
 }
 
-func (source Vector) DivEscalar(escalar float64) Vector {
-	return source.Div(NewVector(escalar, escalar))
+func (source Vector) DivScalar(Scalar float64) Vector {
+	return source.Div(NewVectorFromScalar(Scalar))
 }
 
 func (source Vector) Dot(target Vector) float64 {
 	vector := source.Mul(target)
-	return vector.X + vector.Y
+	return vector.X + vector.Y + vector.Z
 }
 
 func (source Vector) Mul(target Vector) Vector {
-	return NewVector(source.X*target.X, source.Y*target.Y)
+	return NewVector(source.X*target.X, source.Y*target.Y, source.Z*target.Z)
 }
 
 func (source Vector) Div(target Vector) Vector {
-	return NewVector(source.X/target.Y, source.Y/target.Y)
+	return NewVector(source.X/target.Y, source.Y/target.Y, source.Z/source.Z)
 }
 
 func (source Vector) Angle(target Vector) float64 {
@@ -47,41 +51,41 @@ func (source Vector) Angle(target Vector) float64 {
 }
 
 func (target Vector) Len() float64 {
-	return math.Sqrt(math.Abs(target.X*target.X + target.Y*target.Y))
+	return math.Sqrt(math.Abs(target.Dot(target)))
 }
 
 func (target Vector) Unit() Vector {
 	len := target.Len()
 	if len == 0 {
-		return NewVector(0, 0)
+		return NewVectorFromScalar(0)
 	}
 
-	return target.DivEscalar(len)
+	return target.DivScalar(len)
 }
 
 func (target Vector) Normalize() Vector {
 	len := target.Len()
-	return target.Div(NewVector(len, len))
+	return target.Div(NewVectorFromScalar(len))
 }
 
 func (target Vector) NormalizeY() Vector {
-	return target.Div(NewVector(target.Y, target.Y))
+	return target.Div(NewVectorFromScalar(target.Y))
 }
 
 func (target Vector) NormalizeX() Vector {
-	return target.Div(NewVector(target.X, target.X))
+	return target.Div(NewVectorFromScalar(target.X))
 }
 
 func (target Vector) Invert() Vector {
-	return NewVector(target.Y, target.X)
+	return NewVector(target.Y, target.X, target.Z)
 }
 
 func (target Vector) Min(source Vector) Vector {
-	return NewVector(math.Min(source.X, target.X), math.Min(source.Y, target.Y))
+	return NewVector(math.Min(source.X, target.X), math.Min(source.Y, target.Y), math.Min(source.Z, target.Z))
 }
 
 func (target Vector) Max(source Vector) Vector {
-	return NewVector(math.Max(source.X, target.X), math.Max(source.Y, target.Y))
+	return NewVector(math.Max(source.X, target.X), math.Max(source.Y, target.Y), math.Max(source.Z, target.Z))
 }
 
 func (target *Vector) Diff(source Vector) Vector {

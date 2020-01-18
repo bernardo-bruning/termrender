@@ -17,7 +17,7 @@ func NewCanvas() render.Canvas {
 
 func (canvas *CanvasTermUI) size() render.Vector {
 	size := canvas.inner.GetRect().Size()
-	return render.NewVector(float64(size.X), float64(size.Y))
+	return render.NewVector(float64(size.X), float64(size.Y), 0)
 }
 
 func (canvas *CanvasTermUI) SetPoint(position render.Vector, color int) {

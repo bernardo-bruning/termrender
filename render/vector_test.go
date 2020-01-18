@@ -8,13 +8,13 @@ import "math"
 
 func TestAngle(t *testing.T) {
 	scenarios := []struct {
-		a render.Vector
-		b render.Vector
+		a        render.Vector
+		b        render.Vector
 		expected float64
-	} {
+	}{
 		{
-			a: render.NewVector(1, 1),
-			b: render.NewVector(10, 10),
+			a:        render.NewVector(1, 1, 0),
+			b:        render.NewVector(10, 10, 0),
 			expected: 1,
 		},
 	}
@@ -33,5 +33,5 @@ func TestAngle(t *testing.T) {
 
 func equalFloat(a, b float64) bool {
 	epsilon := 0.00000001
-	return math.Abs(a - b) < epsilon && math.Abs(b - a) < epsilon
+	return math.Abs(a-b) < epsilon && math.Abs(b-a) < epsilon
 }
