@@ -21,6 +21,19 @@ func (source Vector) Add(target Vector) Vector {
 	return NewVector(source.X+target.X, source.Y+target.Y)
 }
 
+func (source Vector) MulEscalar(escalar float64) Vector {
+	return source.Mul(NewVector(escalar, escalar))
+}
+
+func (source Vector) DivEscalar(escalar float64) Vector {
+	return source.Div(NewVector(escalar, escalar))
+}
+
+func (source Vector) Dot(target Vector) float64 {
+	vector := source.Mul(target)
+	return vector.X + vector.Y
+}
+
 func (source Vector) Mul(target Vector) Vector {
 	return NewVector(source.X*target.X, source.Y*target.Y)
 }
@@ -29,8 +42,21 @@ func (source Vector) Div(target Vector) Vector {
 	return NewVector(source.X/target.Y, source.Y/target.Y)
 }
 
+func (source Vector) Angle(target Vector) float64 {
+	return source.Dot(target) / (source.Len() * target.Len())
+}
+
 func (target Vector) Len() float64 {
 	return math.Sqrt(math.Abs(target.X*target.X + target.Y*target.Y))
+}
+
+func (target Vector) Unit() Vector {
+	len := target.Len()
+	if len == 0 {
+		return NewVector(0, 0)
+	}
+
+	return target.DivEscalar(len)
 }
 
 func (target Vector) Normalize() Vector {
@@ -64,4 +90,8 @@ func (target *Vector) Diff(source Vector) Vector {
 
 func (v *Vector) ToPointer() image.Point {
 	return image.Pt(int(v.X), int(v.Y))
+}
+
+func (source Vector) Cross(target Vector) float64 {
+	return source.X*target.Y - source.Y*target.Y
 }
