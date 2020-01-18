@@ -71,6 +71,11 @@ func (triangle Triangle) Barycentric(point Vector) Vector {
 	return Vector{X: v, Y: w, Z: u}
 }
 
+func (triangle Triangle) Intersection(point Vector) bool {
+	b := triangle.Barycentric(point)
+	return b.X >= 0 && b.Y >= 0 && b.Z >= 0
+}
+
 func (triangle Triangle) Draw(canvas Canvas, color int) {
 
 	a, b, c := sortVectorsByY(triangle)
