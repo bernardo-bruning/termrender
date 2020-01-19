@@ -1,12 +1,13 @@
 package termui
 
 import (
-	"github.com/bernardo-bruning/termrender/render"
-	ui "github.com/gizak/termui/v3"
+	"image/draw"
 	"log"
+
+	ui "github.com/gizak/termui/v3"
 )
 
-func Render(canvas render.Canvas) {
+func Render(canvas draw.Image) {
 	if canvasTermUI, ok := canvas.(*CanvasTermUI); ok {
 		ui.Render((*canvasTermUI).inner)
 	}

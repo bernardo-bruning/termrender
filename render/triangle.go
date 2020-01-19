@@ -2,6 +2,7 @@ package render
 
 import (
 	"image/color"
+	"image/draw"
 	"math/rand"
 	"sync"
 	"time"
@@ -55,7 +56,7 @@ func sortVectorsByY(triangle Triangle) (Vector, Vector, Vector) {
 	return a, b, c
 }
 
-func (line Line) lineSweeping(canvas Canvas, alpha, beta Line, color color.Color) Line {
+func (line Line) lineSweeping(canvas draw.Image, alpha, beta Line, color color.Color) Line {
 	len := beta.LenVertical()
 
 	if len == 0 {
@@ -101,7 +102,7 @@ func (triangle Triangle) Intersection(point Vector) bool {
 	return b.X >= 0 && b.Y >= 0 && b.Z >= 0
 }
 
-func (triangle Triangle) RasterizeByLine(canvas Canvas, color color.Color) {
+func (triangle Triangle) RasterizeByLine(canvas draw.Image, color color.Color) {
 	a, b, c := sortVectorsByY(triangle)
 
 	alpha := NewLine(a, c)
@@ -117,7 +118,7 @@ func (triangle Triangle) RasterizeByLine(canvas Canvas, color color.Color) {
 	teta.Draw(canvas, color)
 }
 
-func (triangle Triangle) RasterizeByIntersection(canvas Canvas, color color.Color) {
+func (triangle Triangle) RasterizeByIntersection(canvas draw.Image, color color.Color) {
 	start := triangle.a.Min(triangle.b).Min(triangle.c)
 	end := triangle.a.Max(triangle.b).Max(triangle.c)
 
@@ -131,7 +132,7 @@ func (triangle Triangle) RasterizeByIntersection(canvas Canvas, color color.Colo
 	}
 }
 
-func (triangle Triangle) RasterizeByIntersectionParallel(canvas Canvas, color color.Color) {
+func (triangle Triangle) RasterizeByIntersectionParallel(canvas draw.Image, color color.Color) {
 	start := triangle.a.Min(triangle.b).Min(triangle.c)
 	end := triangle.a.Max(triangle.b).Max(triangle.c)
 
@@ -160,6 +161,6 @@ func (triangle Triangle) RasterizeByIntersectionParallel(canvas Canvas, color co
 	}
 }
 
-func (triangle Triangle) Draw(canvas Canvas, color color.Color) {
+func (triangle Triangle) Draw(canvas draw.Image, color color.Color) {
 	triangle.RasterizeByIntersection(canvas, color)
 }

@@ -1,6 +1,9 @@
 package render
 
-import "image/color"
+import (
+	"image/color"
+	"image/draw"
+)
 
 type Line struct {
 	source, target, vector, normalization, veticalNormalization, horizontalNormalization Vector
@@ -57,7 +60,7 @@ func (line Line) NextHorizontal(current Vector) Vector {
 	return current.Add(line.horizontalNormalization)
 }
 
-func (line Line) Draw(canvas Canvas, color color.Color) {
+func (line Line) Draw(canvas draw.Image, color color.Color) {
 	len := line.Len()
 	position := line.source
 	canvas.Set(position.ToPointer().X, position.ToPointer().Y, color)

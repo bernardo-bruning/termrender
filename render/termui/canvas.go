@@ -3,9 +3,9 @@ package termui
 import (
 	"image"
 	"image/color"
+	"image/draw"
 	"math/rand"
 
-	"github.com/bernardo-bruning/termrender/render"
 	ui "github.com/gizak/termui/v3"
 )
 
@@ -13,15 +13,23 @@ type CanvasTermUI struct {
 	inner *ui.Canvas
 }
 
-func NewCanvas() render.Canvas {
+func NewCanvas() draw.Image {
 	c := ui.NewCanvas()
 	c.SetRect(0, 0, 132, 100)
 	return &CanvasTermUI{inner: c}
 }
 
-func (canvas *CanvasTermUI) size() render.Vector {
+func (canvas *CanvasTermUI) ColorModel() color.Model {
+	return color.NRGBAModel
+}
+
+func (canvas *CanvasTermUI) Bounds() image.Rectangle {
 	size := canvas.inner.GetRect().Size()
-	return render.NewVector(float64(size.X), float64(size.Y), 0)
+	return image.Rect(0, 0, size.X, size.Y)
+}
+
+func (canvas *CanvasTermUI) At(x, y int) color.Color {
+	return canvas.inner.At(x, y)
 }
 
 func (canvas *CanvasTermUI) Set(x, y int, color color.Color) {
