@@ -20,7 +20,6 @@ func run() {
 			triangle.Draw(canvas, color.RGBA{R: r, G: g, B: b})
 		}
 		pixel.Render(canvas)
-		//time.Sleep(time.Second * 5)
 	}
 }
 
