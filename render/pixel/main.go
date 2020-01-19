@@ -4,7 +4,6 @@ import (
 	"image"
 	"image/color"
 
-	"github.com/bernardo-bruning/termrender/render"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
@@ -17,8 +16,8 @@ type CanvasPixelGl struct {
 	Win    *pixelgl.Window
 }
 
-func (c *CanvasPixelGl) SetPoint(position render.Vector, color color.Color) {
-	c.image.Set(int(position.X), int(position.Y), color)
+func (c *CanvasPixelGl) SetPoint(x, y int, color color.Color) {
+	c.image.Set(x, y, color)
 }
 
 func NewCanvas() *CanvasPixelGl {
