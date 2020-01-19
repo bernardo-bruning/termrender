@@ -125,7 +125,7 @@ func (triangle Triangle) RasterizeByIntersection(canvas Canvas, color color.Colo
 		for y := start.Y; y <= end.Y; y++ {
 			point := Vector{X: x, Y: y, Z: 0}
 			if triangle.Intersection(point) {
-				canvas.SetPoint(point.ToPointer().X, point.ToPointer().Y, color)
+				canvas.Set(point.ToPointer().X, point.ToPointer().Y, color)
 			}
 		}
 	}
