@@ -3,14 +3,46 @@ package render_test
 import (
 	"github.com/bernardo-bruning/termrender/render"
 	"github.com/bernardo-bruning/termrender/render/termui"
+	"math/rand"
 	"testing"
 )
 
-func BenchmarkTriangle(b *testing.B) {
+func random() float64 {
+	MIN := 0.0
+	MAX := 2000.0
+	return MIN + rand.Float64()*(MAX-MIN)
+}
+
+func newRandTriangle() render.Triangle {
+	return render.NewTriangle(
+		render.Vector{random(), random(), random()},
+		render.Vector{random(), random(), random()},
+		render.Vector{random(), random(), random()},
+	)
+}
+
+func BenchmarkRasterize(b *testing.B) {
+	canvas := termui.NewCanvas()
+	triangle := newRandTriangle()
+
+	b.Run("BenchmarkRasterizeByIntersection", func(b *testing.B) {
+		for n := 0; n < b.N; n++ {
+			triangle.RasterizeByIntersection(canvas, 1)
+		}
+	})
+
+	b.Run("RasterizeByLine", func(b *testing.B) {
+		for n := 0; n < b.N; n++ {
+			triangle.RasterizeByLine(canvas, 1)
+		}
+	})
+}
+
+func BenchmarkRasterizeByIntersection(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		canvas := termui.NewCanvas()
-		triangle := render.NewTriangle(render.Vector{10, 10, 0}, render.Vector{15, 10, 0}, render.Vector{10, 30, 0})
-		triangle.Draw(canvas, 1)
+		triangle := newRandTriangle()
+		triangle.RasterizeByIntersection(canvas, 1)
 	}
 }
 
