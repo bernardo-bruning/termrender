@@ -1,15 +1,15 @@
 package render_test
 
 import (
+	"image"
 	"testing"
 
 	"github.com/bernardo-bruning/termrender/render"
-	"github.com/bernardo-bruning/termrender/render/termui"
 	"golang.org/x/image/colornames"
 )
 
 func BenchmarkRasterize(b *testing.B) {
-	canvas := termui.NewCanvas()
+	canvas := image.NewRGBA(image.Rect(0, 0, 800, 800))
 	triangle := render.NewRandTriangle(0, 800)
 
 	b.Run("RasterizeByIntersectionParallel", func(b *testing.B) {
