@@ -22,5 +22,7 @@ func (canvas *CanvasTermUI) size() render.Vector {
 
 func (canvas *CanvasTermUI) SetPoint(position render.Vector, color int) {
 	pointer := position.ToPointer()
-	canvas.inner.SetPoint(pointer, ui.Color(color))
+	if pointer.X >= 0 && pointer.Y >= 0 {
+		canvas.inner.SetPoint(pointer, ui.Color(color))
+	}
 }

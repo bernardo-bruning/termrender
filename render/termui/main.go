@@ -9,12 +9,6 @@ import (
 func Render(canvas render.Canvas) {
 	if canvasTermUI, ok := canvas.(*CanvasTermUI); ok {
 		ui.Render((*canvasTermUI).inner)
-
-		for e := range ui.PollEvents() {
-			if e.Type == ui.KeyboardEvent {
-				break
-			}
-		}
 	}
 }
 

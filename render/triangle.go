@@ -3,6 +3,7 @@ package render
 import (
 	"math/rand"
 	"sync"
+	"time"
 )
 
 type Triangle struct {
@@ -11,8 +12,10 @@ type Triangle struct {
 	c Vector
 }
 
+var rander *rand.Rand = rand.New(rand.NewSource(time.Now().Unix()))
+
 func random(min, max float64) float64 {
-	return min + rand.Float64()*(max-min)
+	return min + rander.Float64()*(max-min)
 }
 
 func NewRandTriangle(min, max float64) Triangle {
