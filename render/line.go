@@ -60,9 +60,9 @@ func (line Line) NextHorizontal(current Vector) Vector {
 func (line Line) Draw(canvas Canvas, color color.Color) {
 	len := line.Len()
 	position := line.source
-	canvas.SetPoint(position.ToPointer().X, position.ToPointer().Y, color)
+	canvas.Set(position.ToPointer().X, position.ToPointer().Y, color)
 	for i := 0.; i < len-1; i++ {
 		position = line.Next(position)
-		canvas.SetPoint(position.ToPointer().X, position.ToPointer().Y, color)
+		canvas.Set(position.ToPointer().X, position.ToPointer().Y, color)
 	}
 }
