@@ -16,7 +16,7 @@ type CanvasPixelGl struct {
 	Win    *pixelgl.Window
 }
 
-func (c *CanvasPixelGl) SetPoint(x, y int, color color.Color) {
+func (c *CanvasPixelGl) Set(x, y int, color color.Color) {
 	c.image.Set(x, y, color)
 }
 

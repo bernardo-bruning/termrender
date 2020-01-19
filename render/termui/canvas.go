@@ -24,7 +24,7 @@ func (canvas *CanvasTermUI) size() render.Vector {
 	return render.NewVector(float64(size.X), float64(size.Y), 0)
 }
 
-func (canvas *CanvasTermUI) SetPoint(x, y int, color color.Color) {
+func (canvas *CanvasTermUI) Set(x, y int, color color.Color) {
 	pointer := image.Point{x, y}
 	if pointer.X >= 0 && pointer.Y >= 0 {
 		canvas.inner.SetPoint(pointer, ui.Color(rand.Intn(10)))
