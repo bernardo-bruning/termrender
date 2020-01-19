@@ -4,31 +4,30 @@ import (
 	"testing"
 
 	"github.com/bernardo-bruning/termrender/render"
-	"github.com/bernardo-bruning/termrender/render/termui"
 )
 
-func BenchmarkRasterize(b *testing.B) {
-	canvas := termui.NewCanvas()
-	triangle := render.NewRandTriangle(0, 2000)
+// func BenchmarkRasterize(b *testing.B) {
+// 	canvas := termui.NewCanvas()
+// 	triangle := render.NewRandTriangle(0, 2000)
 
-	b.Run("RasterizeByIntersectionParallel", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			triangle.RasterizeByIntersectionParallel(canvas, 1)
-		}
-	})
+// 	b.Run("RasterizeByIntersectionParallel", func(b *testing.B) {
+// 		for n := 0; n < b.N; n++ {
+// 			triangle.RasterizeByIntersectionParallel(canvas, 1)
+// 		}
+// 	})
 
-	b.Run("RasterizeByIntersection", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			triangle.RasterizeByIntersection(canvas, 1)
-		}
-	})
+// 	b.Run("RasterizeByIntersection", func(b *testing.B) {
+// 		for n := 0; n < b.N; n++ {
+// 			triangle.RasterizeByIntersection(canvas, 1)
+// 		}
+// 	})
 
-	b.Run("RasterizeByLine", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			triangle.RasterizeByLine(canvas, 1)
-		}
-	})
-}
+// 	b.Run("RasterizeByLine", func(b *testing.B) {
+// 		for n := 0; n < b.N; n++ {
+// 			triangle.RasterizeByLine(canvas, 1)
+// 		}
+// 	})
+// }
 
 func TestIntersection(t *testing.T) {
 	scenaries := []struct {

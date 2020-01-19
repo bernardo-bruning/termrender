@@ -1,6 +1,9 @@
 package termui
 
 import (
+	"image/color"
+	"math/rand"
+
 	"github.com/bernardo-bruning/termrender/render"
 	ui "github.com/gizak/termui/v3"
 )
@@ -20,9 +23,9 @@ func (canvas *CanvasTermUI) size() render.Vector {
 	return render.NewVector(float64(size.X), float64(size.Y), 0)
 }
 
-func (canvas *CanvasTermUI) SetPoint(position render.Vector, color int) {
+func (canvas *CanvasTermUI) SetPoint(position render.Vector, color color.Color) {
 	pointer := position.ToPointer()
 	if pointer.X >= 0 && pointer.Y >= 0 {
-		canvas.inner.SetPoint(pointer, ui.Color(color))
+		canvas.inner.SetPoint(pointer, ui.Color(rand.Intn(10)))
 	}
 }

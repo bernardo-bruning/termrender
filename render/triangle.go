@@ -1,6 +1,7 @@
 package render
 
 import (
+	"image/color"
 	"math/rand"
 	"sync"
 	"time"
@@ -54,7 +55,7 @@ func sortVectorsByY(triangle Triangle) (Vector, Vector, Vector) {
 	return a, b, c
 }
 
-func (line Line) lineSweeping(canvas Canvas, alpha, beta Line, color int) Line {
+func (line Line) lineSweeping(canvas Canvas, alpha, beta Line, color color.Color) Line {
 	len := beta.LenVertical()
 
 	if len == 0 {
@@ -78,6 +79,10 @@ func (triangle Triangle) Barycentric(point Vector) Vector {
 	v1 := triangle.c.Sub(triangle.a)
 	v2 := point.Sub(triangle.a)
 
+	v0.Z = 0
+	v1.Z = 0
+	v2.Z = 0
+
 	d00 := v0.Dot(v0)
 	d01 := v0.Dot(v1)
 	d11 := v1.Dot(v1)
@@ -96,7 +101,7 @@ func (triangle Triangle) Intersection(point Vector) bool {
 	return b.X >= 0 && b.Y >= 0 && b.Z >= 0
 }
 
-func (triangle Triangle) RasterizeByLine(canvas Canvas, color int) {
+func (triangle Triangle) RasterizeByLine(canvas Canvas, color color.Color) {
 	a, b, c := sortVectorsByY(triangle)
 
 	alpha := NewLine(a, c)
@@ -112,9 +117,10 @@ func (triangle Triangle) RasterizeByLine(canvas Canvas, color int) {
 	teta.Draw(canvas, color)
 }
 
-func (triangle Triangle) RasterizeByIntersection(canvas Canvas, color int) {
+func (triangle Triangle) RasterizeByIntersection(canvas Canvas, color color.Color) {
 	start := triangle.a.Min(triangle.b).Min(triangle.c)
 	end := triangle.a.Max(triangle.b).Max(triangle.c)
+
 	for x := start.X; x <= end.X; x++ {
 		for y := start.Y; y <= end.Y; y++ {
 			point := Vector{X: x, Y: y, Z: 0}
@@ -125,7 +131,7 @@ func (triangle Triangle) RasterizeByIntersection(canvas Canvas, color int) {
 	}
 }
 
-func (triangle Triangle) RasterizeByIntersectionParallel(canvas Canvas, color int) {
+func (triangle Triangle) RasterizeByIntersectionParallel(canvas Canvas, color color.Color) {
 	start := triangle.a.Min(triangle.b).Min(triangle.c)
 	end := triangle.a.Max(triangle.b).Max(triangle.c)
 
@@ -154,6 +160,6 @@ func (triangle Triangle) RasterizeByIntersectionParallel(canvas Canvas, color in
 	}
 }
 
-func (triangle Triangle) Draw(canvas Canvas, color int) {
-	triangle.RasterizeByIntersectionParallel(canvas, color)
+func (triangle Triangle) Draw(canvas Canvas, color color.Color) {
+	triangle.RasterizeByIntersection(canvas, color)
 }
