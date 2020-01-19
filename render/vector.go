@@ -43,7 +43,22 @@ func (source Vector) Mul(target Vector) Vector {
 }
 
 func (source Vector) Div(target Vector) Vector {
-	return NewVector(source.X/target.Y, source.Y/target.Y, source.Z/source.Z)
+	if target.X != 0 {
+		source.X /= target.X
+	} else {
+		source.X = 0
+	}
+	if target.Y != 0 {
+		source.Y /= target.Y
+	} else {
+		source.Y = 0
+	}
+	if target.Z != 0 {
+		source.Z /= target.Z
+	} else {
+		source.Z = 0
+	}
+	return source
 }
 
 func (source Vector) Angle(target Vector) float64 {
