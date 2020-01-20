@@ -10,23 +10,32 @@ import (
 
 func BenchmarkRasterize(b *testing.B) {
 	canvas := image.NewRGBA(image.Rect(0, 0, 800, 800))
-	triangle := render.NewRandTriangle(0, 800)
+	triangles := make([]render.Triangle, 100)
+	for i := 0; i < 100; i++ {
+		triangles[i] = render.NewRandTriangle(0, 800)
+	}
 
 	b.Run("RasterizeByIntersectionParallel", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			triangle.RasterizeByIntersectionParallel(canvas, colornames.Red)
+			for i := 0; i < len(triangles); i++ {
+				triangles[i].RasterizeByIntersectionParallel(canvas, colornames.Red)
+			}
 		}
 	})
 
 	b.Run("RasterizeByIntersection", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			triangle.RasterizeByIntersection(canvas, colornames.Red)
+			for i := 0; i < len(triangles); i++ {
+				triangles[i].RasterizeByIntersection(canvas, colornames.Red)
+			}
 		}
 	})
 
 	b.Run("RasterizeByLine", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			triangle.RasterizeByLine(canvas, colornames.Red)
+			for i := 0; i < len(triangles); i++ {
+				triangles[i].RasterizeByLine(canvas, colornames.Red)
+			}
 		}
 	})
 }

@@ -4,14 +4,17 @@ import (
 	"image/color"
 	"image/draw"
 	"math/rand"
+	"runtime"
 	"sync"
 	"time"
 )
 
 type Triangle struct {
-	a Vector
-	b Vector
-	c Vector
+	a  Vector
+	b  Vector
+	c  Vector
+	ab Vector
+	ac Vector
 }
 
 var rander *rand.Rand = rand.New(rand.NewSource(time.Now().Unix()))
@@ -29,7 +32,7 @@ func NewRandTriangle(min, max float64) Triangle {
 }
 
 func NewTriangle(a, b, c Vector) Triangle {
-	return Triangle{a, b, c}
+	return Triangle{a: a, b: b, c: c, ab: b.Sub(a), ac: c.Sub(a)}
 }
 
 func swap(v1 Vector, v2 Vector) (Vector, Vector) {
@@ -75,9 +78,9 @@ func (line Line) lineSweeping(canvas draw.Image, alpha, beta Line, color color.C
 	return line
 }
 
-func (triangle Triangle) Barycentric(point Vector) Vector {
-	v0 := triangle.b.Sub(triangle.a)
-	v1 := triangle.c.Sub(triangle.a)
+func (triangle *Triangle) Barycentric(point Vector) Vector {
+	v0 := triangle.ab
+	v1 := triangle.ac
 	v2 := point.Sub(triangle.a)
 
 	v0.Z = 0
@@ -97,7 +100,7 @@ func (triangle Triangle) Barycentric(point Vector) Vector {
 	return Vector{X: v, Y: w, Z: u}
 }
 
-func (triangle Triangle) Intersection(point Vector) bool {
+func (triangle *Triangle) Intersection(point Vector) bool {
 	b := triangle.Barycentric(point)
 	return b.X >= 0 && b.Y >= 0 && b.Z >= 0
 }
@@ -135,32 +138,27 @@ func (triangle Triangle) RasterizeByIntersection(canvas draw.Image, color color.
 func (triangle Triangle) RasterizeByIntersectionParallel(canvas draw.Image, color color.Color) {
 	start := triangle.a.Min(triangle.b).Min(triangle.c)
 	end := triangle.a.Max(triangle.b).Max(triangle.c)
-
-	panel := make(chan Vector, 500)
 	var wg sync.WaitGroup
-	for x := start.X; x <= end.X; x++ {
+	numCpu := runtime.NumCPU()
+	batch := int(end.X) - int(start.X)/numCpu
+	for i := 0; i < numCpu; i++ {
 		wg.Add(1)
-		go func(x float64) {
-			for y := start.Y; y <= end.Y; y++ {
-				point := Vector{X: x, Y: y, Z: 0}
-				if triangle.Intersection(point) {
-					panel <- point
+		go func(i int) {
+			for x := start.X + float64(batch*i); x <= end.X+float64(batch*(i+1)); x++ {
+				for y := start.Y; y <= end.Y; y++ {
+					point := Vector{X: x, Y: y, Z: 0}
+					if triangle.Intersection(point) {
+						canvas.Set(point.ToPointer().X, point.ToPointer().Y, color)
+					}
 				}
 			}
 			wg.Done()
-		}(x)
+		}(i)
 	}
 
-	go func() {
-		wg.Wait()
-		close(panel)
-	}()
-
-	for p := range panel {
-		canvas.Set(p.ToPointer().X, p.ToPointer().Y, color)
-	}
+	wg.Wait()
 }
 
 func (triangle Triangle) Draw(canvas draw.Image, color color.Color) {
-	triangle.RasterizeByIntersection(canvas, color)
+	triangle.RasterizeByLine(canvas, color)
 }

@@ -24,7 +24,7 @@ func run() {
 
 	img := image.NewRGBA(image.Rect(0, 0, int(win.Bounds().W()), int(win.Bounds().H())))
 	for !win.Closed() {
-		for i := 0; i < 100; i++ {
+		for i := 0; i < 200; i++ {
 			triangle := render.NewRandTriangle(0, 800)
 			r := uint8(rand.Intn(255))
 			g := uint8(rand.Intn(255))

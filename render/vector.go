@@ -18,7 +18,11 @@ func NewVector(x float64, y float64, z float64) Vector {
 }
 
 func (source Vector) Sub(target Vector) Vector {
-	return NewVector(source.X-target.X, source.Y-target.Y, source.Z-target.Z)
+	source.X -= target.X
+	source.Y -= target.Y
+	source.Z -= target.Z
+
+	return source
 }
 
 func (source Vector) Add(target Vector) Vector {
