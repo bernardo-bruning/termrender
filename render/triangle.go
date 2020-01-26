@@ -1,6 +1,7 @@
 package render
 
 import (
+	"image"
 	"image/color"
 	"image/draw"
 	"math/rand"
@@ -33,6 +34,12 @@ func NewRandTriangle(min, max float64) Triangle {
 
 func NewTriangle(a, b, c Vector) Triangle {
 	return Triangle{a: a, b: b, c: c, ab: b.Sub(a), ac: c.Sub(a)}
+}
+
+func (triangle Triangle) Bounds() image.Rectangle {
+	start := triangle.a.Min(triangle.b).Min(triangle.c)
+	end := triangle.a.Max(triangle.b).Max(triangle.c)
+	return image.Rect(start.ToPointer().X, start.ToPointer().Y, end.ToPointer().X, end.ToPointer().Y)
 }
 
 func swap(v1 Vector, v2 Vector) (Vector, Vector) {

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"image"
+	"time"
 
 	"github.com/bernardo-bruning/termrender/render"
 	"github.com/bernardo-bruning/termrender/render/pixel"
@@ -29,11 +31,18 @@ func run() {
 	}
 
 	mesh := render.NewMesh(triangles)
-
+	fps := time.Now()
+	fpsIterator := 0
 	for !win.Closed() {
 		mesh.Draw(img)
 		pixel.Render(win, img)
 		img = image.NewRGBA(image.Rect(0, 0, int(win.Bounds().W()), int(win.Bounds().H())))
+		fpsIterator++
+		if time.Now().Sub(fps) > time.Second {
+			fmt.Printf("fps: %d\n", fpsIterator)
+			fpsIterator = 0
+			fps = time.Now()
+		}
 	}
 }
 
