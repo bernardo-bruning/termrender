@@ -2,8 +2,6 @@ package main
 
 import (
 	"image"
-	"image/color"
-	"math/rand"
 
 	"github.com/bernardo-bruning/termrender/render"
 	"github.com/bernardo-bruning/termrender/render/pixel"
@@ -23,14 +21,17 @@ func run() {
 	}
 
 	img := image.NewRGBA(image.Rect(0, 0, int(win.Bounds().W()), int(win.Bounds().H())))
+
+	triangles := make([]render.Triangle, 100)
+	for i := 0; i < 1000; i++ {
+		triangle := render.NewRandTriangle(0, 800)
+		triangles = append(triangles, triangle)
+	}
+
+	mesh := render.NewMesh(triangles)
+
 	for !win.Closed() {
-		for i := 0; i < 200; i++ {
-			triangle := render.NewRandTriangle(0, 800)
-			r := uint8(rand.Intn(255))
-			g := uint8(rand.Intn(255))
-			b := uint8(rand.Intn(255))
-			triangle.Draw(img, color.RGBA{R: r, G: g, B: b})
-		}
+		mesh.Draw(img)
 		pixel.Render(win, img)
 		img = image.NewRGBA(image.Rect(0, 0, int(win.Bounds().W()), int(win.Bounds().H())))
 	}

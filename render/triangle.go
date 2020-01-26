@@ -160,5 +160,5 @@ func (triangle Triangle) RasterizeByIntersectionParallel(canvas draw.Image, colo
 }
 
 func (triangle Triangle) Draw(canvas draw.Image, color color.Color) {
-	triangle.RasterizeByLine(canvas, color)
+	triangle.RasterizeByIntersection(canvas, color)
 }
