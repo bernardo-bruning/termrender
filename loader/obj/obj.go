@@ -16,6 +16,10 @@ func Load(r io.Reader) (render.Mesh, error) {
 	triangles := []render.Triangle{}
 	for scanner.Scan() {
 		line := scanner.Text()
+		if line == "" {
+			continue
+		}
+
 		obj := strings.Split(line, " ")
 		if strings.EqualFold(obj[0], "v") {
 			if len(obj) < 4 {

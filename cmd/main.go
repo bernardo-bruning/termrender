@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 	"image"
+	"os"
 	"time"
 
-	"github.com/bernardo-bruning/termrender/render"
+	"github.com/bernardo-bruning/termrender/loader/obj"
 	"github.com/bernardo-bruning/termrender/render/pixel"
 	p "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
@@ -23,14 +24,16 @@ func run() {
 	}
 
 	img := image.NewRGBA(image.Rect(0, 0, int(win.Bounds().W()), int(win.Bounds().H())))
-
-	triangles := make([]render.Triangle, 100)
-	for i := 0; i < 3000; i++ {
-		triangle := render.NewRandTriangle(0, 20)
-		triangles = append(triangles, triangle)
+	file, err := os.Open("loader/obj/cube.obj")
+	if err != nil {
+		panic(err)
 	}
 
-	mesh := render.NewMesh(triangles)
+	mesh, err := obj.Load(file)
+	if err != nil {
+		panic(err)
+	}
+
 	fps := time.Now()
 	fpsIterator := 0
 	for !win.Closed() {
