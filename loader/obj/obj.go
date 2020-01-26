@@ -49,8 +49,8 @@ func Load(r io.Reader) (render.Mesh, error) {
 				return render.Mesh{}, errors.New("Invalid load face")
 			}
 			a := strings.Split(obj[1], "/")
-			b := strings.Split(obj[1], "/")
-			c := strings.Split(obj[1], "/")
+			b := strings.Split(obj[2], "/")
+			c := strings.Split(obj[3], "/")
 
 			ai, err := strconv.Atoi(a[0])
 			if err != nil {
