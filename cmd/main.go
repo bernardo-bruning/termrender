@@ -25,8 +25,8 @@ func run() {
 	img := image.NewRGBA(image.Rect(0, 0, int(win.Bounds().W()), int(win.Bounds().H())))
 
 	triangles := make([]render.Triangle, 100)
-	for i := 0; i < 1000; i++ {
-		triangle := render.NewRandTriangle(0, 800)
+	for i := 0; i < 3000; i++ {
+		triangle := render.NewRandTriangle(0, 20)
 		triangles = append(triangles, triangle)
 	}
 

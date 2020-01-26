@@ -25,10 +25,12 @@ func random(min, max float64) float64 {
 }
 
 func NewRandTriangle(min, max float64) Triangle {
+	x := random(0, 600)
+	y := random(0, 600)
 	return NewTriangle(
-		Vector{random(min, max), random(min, max), random(min, max)},
-		Vector{random(min, max), random(min, max), random(min, max)},
-		Vector{random(min, max), random(min, max), random(min, max)},
+		Vector{random(min, max), random(min, max), random(min, max)}.Add(NewVector(x, y, 0)),
+		Vector{random(min, max), random(min, max), random(min, max)}.Add(NewVector(x, y, 0)),
+		Vector{random(min, max), random(min, max), random(min, max)}.Add(NewVector(x, y, 0)),
 	)
 }
 
