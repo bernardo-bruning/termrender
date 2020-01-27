@@ -24,7 +24,8 @@ func run() {
 	}
 
 	img := image.NewRGBA(image.Rect(0, 0, int(win.Bounds().W()), int(win.Bounds().H())))
-	file, err := os.Open("loader/obj/cube.obj")
+	path := os.Args[1]
+	file, err := os.Open(path)
 	if err != nil {
 		panic(err)
 	}
