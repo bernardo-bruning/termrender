@@ -49,6 +49,8 @@ func (triangle Triangle) Mul(v Vector) Triangle {
 	triangle.a = triangle.a.Mul(v)
 	triangle.b = triangle.b.Mul(v)
 	triangle.c = triangle.c.Mul(v)
+	triangle.ab = triangle.b.Sub(triangle.a)
+	triangle.ac = triangle.c.Sub(triangle.a)
 	return triangle
 }
 

@@ -68,9 +68,9 @@ func Load(r io.Reader) (render.Mesh, error) {
 			}
 
 			triangles = append(triangles, render.NewTriangle(
-				vectors[ai-1].MulScalar(-1),
-				vectors[bi-1].MulScalar(-1),
-				vectors[ci-1].MulScalar(-1),
+				vectors[ai-1],
+				vectors[bi-1],
+				vectors[ci-1],
 			))
 		}
 	}
