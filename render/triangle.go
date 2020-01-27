@@ -40,8 +40,15 @@ func NewTriangle(a, b, c Vector) Triangle {
 
 func (triangle Triangle) Add(v Vector) Triangle {
 	triangle.a = triangle.a.Add(v)
-	triangle.b = triangle.a.Add(v)
-	triangle.c = triangle.a.Add(v)
+	triangle.b = triangle.b.Add(v)
+	triangle.c = triangle.c.Add(v)
+	return triangle
+}
+
+func (triangle Triangle) Mul(v Vector) Triangle {
+	triangle.a = triangle.a.Mul(v)
+	triangle.b = triangle.b.Mul(v)
+	triangle.c = triangle.c.Mul(v)
 	return triangle
 }
 

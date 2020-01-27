@@ -16,7 +16,14 @@ func NewMesh(triangles []Triangle) Mesh {
 
 func (m Mesh) Add(v Vector) Mesh {
 	for i := range m.Triangles {
-		m.Triangles[i].Add(v)
+		m.Triangles[i] = m.Triangles[i].Add(v)
+	}
+	return m
+}
+
+func (m Mesh) Mul(v Vector) Mesh {
+	for i := range m.Triangles {
+		m.Triangles[i] = m.Triangles[i].Mul(v)
 	}
 	return m
 }

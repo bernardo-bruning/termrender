@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/bernardo-bruning/termrender/loader/obj"
+	"github.com/bernardo-bruning/termrender/render"
 	"github.com/bernardo-bruning/termrender/render/pixel"
 	p "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
@@ -31,6 +32,9 @@ func run() {
 	}
 
 	mesh, err := obj.Load(file)
+	fmt.Println("Numbers of triangles", len(mesh.Triangles))
+	mesh = mesh.Add(render.NewVector(400, 300, 0))
+	//mesh = mesh.Mul(render.NewVector(5, 5, 5))
 	if err != nil {
 		panic(err)
 	}
@@ -38,6 +42,7 @@ func run() {
 	fps := time.Now()
 	fpsIterator := 0
 	for !win.Closed() {
+		//mesh = mesh.Mul(render.NewVector(1.01, 1.01, 1))
 		mesh.Draw(img)
 		pixel.Render(win, img)
 		img = image.NewRGBA(image.Rect(0, 0, int(win.Bounds().W()), int(win.Bounds().H())))

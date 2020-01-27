@@ -11,7 +11,7 @@
             "mode": "auto",
             "program": "${fileDirname}",
             "env": {},
-            "args": ["run", "./cmd/main.go"]
+            "args": ["../loader/obj/cube.obj"]
         }
     ]
 }
