@@ -38,6 +38,13 @@ func NewTriangle(a, b, c Vector) Triangle {
 	return Triangle{a: a, b: b, c: c, ab: b.Sub(a), ac: c.Sub(a)}
 }
 
+func (triangle Triangle) Add(v Vector) Triangle {
+	triangle.a = triangle.a.Add(v)
+	triangle.b = triangle.a.Add(v)
+	triangle.c = triangle.a.Add(v)
+	return triangle
+}
+
 func (triangle Triangle) Bounds() image.Rectangle {
 	start := triangle.a.Min(triangle.b).Min(triangle.c)
 	end := triangle.a.Max(triangle.b).Max(triangle.c)
