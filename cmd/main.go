@@ -32,7 +32,7 @@ func run() {
 	}
 
 	mesh, err := obj.Load(file)
-	mesh = mesh.Mul(render.NewVectorFromScalar(-4)).Add(render.NewVector(400, 400, 0))
+	mesh = mesh.Mul(render.NewVector(-4, -4, 4)).Add(render.NewVector(400, 400, 0))
 	fmt.Println("Numbers of triangles", len(mesh.Triangles))
 	if err != nil {
 		panic(err)

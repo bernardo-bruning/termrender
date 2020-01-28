@@ -103,6 +103,11 @@ func (line Line) lineSweeping(canvas draw.Image, alpha, beta Line, color color.C
 	return line
 }
 
+func (triangle *Triangle) Z(point Vector) float64 {
+	bc := triangle.Barycentric(point)
+	return bc.X*triangle.a.Z + bc.Y*triangle.b.Z + bc.Z*triangle.c.Z
+}
+
 func (triangle *Triangle) Barycentric(point Vector) Vector {
 	v0 := triangle.ab
 	v1 := triangle.ac
@@ -122,7 +127,7 @@ func (triangle *Triangle) Barycentric(point Vector) Vector {
 	v := (d11*d20 - d01*d21) * denom
 	w := (d00*d21 - d01*d20) * denom
 	u := 1 - v - w
-	return Vector{X: v, Y: w, Z: u}
+	return Vector{X: u, Y: v, Z: w}
 }
 
 func (triangle *Triangle) Intersection(point Vector) bool {
