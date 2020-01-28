@@ -45,7 +45,7 @@ func (m Mesh) Draw(dst draw.Image) {
 				if bc.X >= 0 && bc.Y >= 0 && bc.Z >= 0 {
 					if z > zbuffer[y+x*dst.Bounds().Dy()] {
 						color := colornames.Black
-						color.R += uint8(z + 400)
+						color.B += uint8(z + 400)
 						dst.Set(point.ToPointer().X, point.ToPointer().Y, color)
 						zbuffer[y+x*dst.Bounds().Dy()] = z
 					}
