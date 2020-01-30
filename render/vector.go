@@ -115,6 +115,12 @@ func (v *Vector) ToPointer() image.Point {
 	return image.Pt(int(v.X), int(v.Y))
 }
 
+func (v Vector) RotateY(rotation float64) Vector {
+	v.X = v.X*math.Cos(rotation) + v.Z*math.Sin(rotation)
+	v.Z = -v.X*math.Sin(rotation) + v.Z*math.Cos(rotation)
+	return v
+}
+
 func (source Vector) Cross(target Vector) Vector {
 	source.X = source.Y*target.Z - target.Z - source.Y
 	source.Y = source.Z*target.X - target.Z - source.X

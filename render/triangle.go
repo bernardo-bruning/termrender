@@ -151,6 +151,13 @@ func (triangle Triangle) RasterizeByLine(canvas draw.Image, color color.Color) {
 	teta.Draw(canvas, color)
 }
 
+func (triangle Triangle) RotateY(rotation float64) Triangle {
+	triangle.a = triangle.a.RotateY(rotation)
+	triangle.b = triangle.b.RotateY(rotation)
+	triangle.c = triangle.c.RotateY(rotation)
+	return triangle
+}
+
 func (triangle Triangle) RasterizeByIntersection(canvas draw.Image, color color.Color) {
 	start := triangle.a.Min(triangle.b).Min(triangle.c)
 	end := triangle.a.Max(triangle.b).Max(triangle.c)

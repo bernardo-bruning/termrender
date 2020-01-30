@@ -16,20 +16,35 @@ func NewMesh(triangles []Triangle) Mesh {
 }
 
 func (m Mesh) Add(v Vector) Mesh {
+	triangles := make([]Triangle, len(m.Triangles))
 	for i := range m.Triangles {
-		m.Triangles[i] = m.Triangles[i].Add(v)
+		triangles[i] = m.Triangles[i].Add(v)
 	}
+	m.Triangles = triangles
 	return m
 }
 
 func (m Mesh) Mul(v Vector) Mesh {
+	triangles := make([]Triangle, len(m.Triangles))
 	for i := range m.Triangles {
-		m.Triangles[i] = m.Triangles[i].Mul(v)
+		triangles[i] = m.Triangles[i].Mul(v)
 	}
+
+	m.Triangles = triangles
+	return m
+}
+
+func (m Mesh) RotateY(rotation float64) Mesh {
+	triangles := make([]Triangle, len(m.Triangles))
+	for i := range m.Triangles {
+		triangles[i] = m.Triangles[i].RotateY(rotation)
+	}
+	m.Triangles = triangles
 	return m
 }
 
 func (m Mesh) Draw(dst draw.Image) {
+	lightZ := 400.0
 	zbuffer := make([]float64, dst.Bounds().Dx()*dst.Bounds().Dy())
 	for i := range zbuffer {
 		zbuffer[i] = math.Inf(-1)
@@ -45,7 +60,7 @@ func (m Mesh) Draw(dst draw.Image) {
 				if bc.X >= 0 && bc.Y >= 0 && bc.Z >= 0 {
 					if z > zbuffer[y+x*dst.Bounds().Dy()] {
 						color := colornames.Black
-						color.B += uint8(z + 400)
+						color.B += uint8(z/2 + lightZ)
 						dst.Set(point.ToPointer().X, point.ToPointer().Y, color)
 						zbuffer[y+x*dst.Bounds().Dy()] = z
 					}
