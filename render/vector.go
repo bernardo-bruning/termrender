@@ -121,6 +121,18 @@ func (v Vector) RotateY(rotation float64) Vector {
 	return v
 }
 
+func (v Vector) RotateX(rotation float64) Vector {
+	v.Y = v.Y*math.Cos(rotation) - v.Z*math.Sin(rotation)
+	v.Z = v.Y*math.Sin(rotation) + v.Z*math.Cos(rotation)
+	return v
+}
+
+func (v Vector) RotateZ(rotation float64) Vector {
+	v.X = v.X*math.Cos(rotation) - v.Y*math.Sin(rotation)
+	v.Y = v.X*math.Sin(rotation) + v.Y*math.Cos(rotation)
+	return v
+}
+
 func (source Vector) Cross(target Vector) Vector {
 	source.X = source.Y*target.Z - target.Z - source.Y
 	source.Y = source.Z*target.X - target.Z - source.X

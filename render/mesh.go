@@ -34,13 +34,31 @@ func (m Mesh) Mul(v Vector) Mesh {
 	return m
 }
 
-func (m Mesh) RotateY(rotation float64) Mesh {
+func (m Mesh) apply(f func(Triangle) Triangle) Mesh {
 	triangles := make([]Triangle, len(m.Triangles))
 	for i := range m.Triangles {
-		triangles[i] = m.Triangles[i].RotateY(rotation)
+		triangles[i] = f(m.Triangles[i])
 	}
 	m.Triangles = triangles
 	return m
+}
+
+func (m Mesh) RotateX(rotation float64) Mesh {
+	return m.apply(func(t Triangle) Triangle {
+		return t.RotateX(rotation)
+	})
+}
+
+func (m Mesh) RotateY(rotation float64) Mesh {
+	return m.apply(func(t Triangle) Triangle {
+		return t.RotateY(rotation)
+	})
+}
+
+func (m Mesh) RotateZ(rotation float64) Mesh {
+	return m.apply(func(t Triangle) Triangle {
+		return t.RotateZ(rotation)
+	})
 }
 
 func (m Mesh) Draw(dst draw.Image) {

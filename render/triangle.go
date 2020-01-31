@@ -151,11 +151,29 @@ func (triangle Triangle) RasterizeByLine(canvas draw.Image, color color.Color) {
 	teta.Draw(canvas, color)
 }
 
-func (triangle Triangle) RotateY(rotation float64) Triangle {
-	triangle.a = triangle.a.RotateY(rotation)
-	triangle.b = triangle.b.RotateY(rotation)
-	triangle.c = triangle.c.RotateY(rotation)
+func (triangle Triangle) apply(f func(v Vector) Vector) Triangle {
+	triangle.a = f(triangle.a)
+	triangle.b = f(triangle.b)
+	triangle.c = f(triangle.c)
 	return triangle
+}
+
+func (triangle Triangle) RotateX(rotation float64) Triangle {
+	return triangle.apply(func(v Vector) Vector {
+		return v.RotateX(rotation)
+	})
+}
+
+func (triangle Triangle) RotateY(rotation float64) Triangle {
+	return triangle.apply(func(v Vector) Vector {
+		return v.RotateY(rotation)
+	})
+}
+
+func (triangle Triangle) RotateZ(rotation float64) Triangle {
+	return triangle.apply(func(v Vector) Vector {
+		return v.RotateZ(rotation)
+	})
 }
 
 func (triangle Triangle) RasterizeByIntersection(canvas draw.Image, color color.Color) {
