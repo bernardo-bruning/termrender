@@ -8,11 +8,16 @@ import (
 )
 
 type Mesh struct {
-	Triangles []Triangle
+	Triangles      []Triangle
+	TextureMapping []Triangle
 }
 
 func NewMesh(triangles []Triangle) Mesh {
 	return Mesh{Triangles: triangles}
+}
+
+func NewMeshWithTexture(triangles, textureMapping []Triangle) Mesh {
+	return Mesh{Triangles: triangles, TextureMapping: textureMapping}
 }
 
 func (m Mesh) Add(v Vector) Mesh {
