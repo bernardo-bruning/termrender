@@ -10,6 +10,7 @@ import (
 type Mesh struct {
 	Triangles      []Triangle
 	TextureMapping []Triangle
+	Texture        draw.Image
 }
 
 func NewMesh(triangles []Triangle) Mesh {
