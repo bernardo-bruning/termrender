@@ -101,6 +101,7 @@ func Load(r io.Reader) (render.Mesh, error) {
 			a := strings.Split(obj[1], "/")
 			b := strings.Split(obj[2], "/")
 			c := strings.Split(obj[3], "/")
+			d := strings.Split(obj[4], "/")
 
 			triangle, err := loadTriangle(vectors, a[0], b[0], c[0])
 			if err != nil {
@@ -108,7 +109,22 @@ func Load(r io.Reader) (render.Mesh, error) {
 			}
 			triangles = append(triangles, triangle)
 
+			triangle, err = loadTriangle(vectors, a[0], c[0], d[0])
+			if err != nil {
+				return render.Mesh{}, nil
+			}
+			triangles = append(triangles, triangle)
+
 			triangleTexture, err := loadTriangle(vectorsTexture, a[1], b[1], c[1])
+			if err != nil {
+				return render.Mesh{}, nil
+			}
+
+			if triangleTexture != render.EmptyTriangle() {
+				trianglesTexture = append(trianglesTexture, triangleTexture)
+			}
+
+			triangleTexture, err = loadTriangle(vectorsTexture, a[1], c[1], d[1])
 			if err != nil {
 				return render.Mesh{}, nil
 			}
