@@ -10,8 +10,8 @@ import (
 )
 
 func loadVector(values []string) (render.Vector, error) {
-	if len(values) < 4 {
-		return render.Vector{}, errors.New("Invalid load vertice")
+	if len(values) < 3 {
+		return render.Vector{}, errors.New("Invalid load vector")
 	}
 
 	x, err := strconv.ParseFloat(values[1], 64)
@@ -22,6 +22,10 @@ func loadVector(values []string) (render.Vector, error) {
 	y, err := strconv.ParseFloat(values[2], 64)
 	if err != nil {
 		return render.Vector{}, err
+	}
+
+	if len(values) == 3 {
+		return render.Vector{X: x, Y: y, Z: 0}, nil
 	}
 
 	z, err := strconv.ParseFloat(values[3], 64)
@@ -36,6 +40,7 @@ func loadVector(values []string) (render.Vector, error) {
 func Load(r io.Reader) (render.Mesh, error) {
 	scanner := bufio.NewScanner(r)
 	vectors := []render.Vector{}
+	vectorsTexture := []render.Vector{}
 	triangles := []render.Triangle{}
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -50,6 +55,15 @@ func Load(r io.Reader) (render.Mesh, error) {
 				return render.Mesh{}, err
 			}
 			vectors = append(vectors, vector)
+		}
+
+		if strings.EqualFold(obj[0], "vt") {
+			vector, err := loadVector(obj)
+			if err != nil {
+				return render.Mesh{}, err
+			}
+
+			vectorsTexture = append(vectorsTexture, vector)
 		}
 
 		if strings.EqualFold(obj[0], "f") {
