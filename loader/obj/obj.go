@@ -37,6 +37,10 @@ func loadVector(values []string) (render.Vector, error) {
 }
 
 func loadTriangle(vectors []render.Vector, a, b, c string) (render.Triangle, error) {
+	if a == "" || b == "" || c == "" {
+		return render.Triangle{}, nil
+	}
+
 	ai, err := strconv.Atoi(a)
 	if err != nil {
 		return render.Triangle{}, err
@@ -65,6 +69,7 @@ func Load(r io.Reader) (render.Mesh, error) {
 	vectors := []render.Vector{}
 	vectorsTexture := []render.Vector{}
 	triangles := []render.Triangle{}
+	trianglesTexture := []render.Triangle{}
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line == "" {
@@ -96,15 +101,23 @@ func Load(r io.Reader) (render.Mesh, error) {
 			a := strings.Split(obj[1], "/")
 			b := strings.Split(obj[2], "/")
 			c := strings.Split(obj[3], "/")
-			
+
 			triangle, err := loadTriangle(vectors, a[0], b[0], c[0])
 			if err != nil {
 				return render.Mesh{}, nil
 			}
-
 			triangles = append(triangles, triangle)
+
+			triangleTexture, err := loadTriangle(vectorsTexture, a[1], b[1], c[1])
+			if err != nil {
+				return render.Mesh{}, nil
+			}
+
+			if triangleTexture != render.EmptyTriangle() {
+				trianglesTexture = append(trianglesTexture, triangleTexture)
+			}
 		}
 	}
 
-	return render.NewMesh(triangles), nil
+	return render.NewMeshWithTexture(triangles, trianglesTexture), nil
 }

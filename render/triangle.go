@@ -24,6 +24,10 @@ func random(min, max float64) float64 {
 	return min + rander.Float64()*(max-min)
 }
 
+func EmptyTriangle() Triangle {
+	return Triangle{}
+}
+
 func NewRandTriangle(min, max float64) Triangle {
 	x := random(0, 600)
 	y := random(0, 600)
