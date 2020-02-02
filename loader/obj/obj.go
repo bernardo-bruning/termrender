@@ -29,7 +29,7 @@ func loadVector(values []string) (render.Vector, error) {
 		return render.Vector{}, err
 	}
 
-	return render.Vector{x, y, z}, nil
+	return render.Vector{X: x, Y: y, Z: z}, nil
 }
 
 //Load return a mesh from file obj
