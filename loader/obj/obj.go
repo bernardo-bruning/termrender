@@ -36,6 +36,29 @@ func loadVector(values []string) (render.Vector, error) {
 	return render.Vector{X: x, Y: y, Z: z}, nil
 }
 
+func loadTriangle(vectors []render.Vector, a, b, c string) (render.Triangle, error) {
+	ai, err := strconv.Atoi(a)
+	if err != nil {
+		return render.Triangle{}, err
+	}
+
+	bi, err := strconv.Atoi(b)
+	if err != nil {
+		return render.Triangle{}, err
+	}
+
+	ci, err := strconv.Atoi(c)
+	if err != nil {
+		return render.Triangle{}, err
+	}
+
+	return render.NewTriangle(
+		vectors[ai-1],
+		vectors[bi-1],
+		vectors[ci-1],
+	), nil
+}
+
 //Load return a mesh from file obj
 func Load(r io.Reader) (render.Mesh, error) {
 	scanner := bufio.NewScanner(r)
@@ -73,27 +96,13 @@ func Load(r io.Reader) (render.Mesh, error) {
 			a := strings.Split(obj[1], "/")
 			b := strings.Split(obj[2], "/")
 			c := strings.Split(obj[3], "/")
-
-			ai, err := strconv.Atoi(a[0])
+			
+			triangle, err := loadTriangle(vectors, a[0], b[0], c[0])
 			if err != nil {
-				return render.Mesh{}, err
+				return render.Mesh{}, nil
 			}
 
-			bi, err := strconv.Atoi(b[0])
-			if err != nil {
-				return render.Mesh{}, err
-			}
-
-			ci, err := strconv.Atoi(c[0])
-			if err != nil {
-				return render.Mesh{}, err
-			}
-
-			triangles = append(triangles, render.NewTriangle(
-				vectors[ai-1],
-				vectors[bi-1],
-				vectors[ci-1],
-			))
+			triangles = append(triangles, triangle)
 		}
 	}
 
