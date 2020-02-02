@@ -1,10 +1,9 @@
 package render
 
 import (
+	"golang.org/x/image/colornames"
 	"image/draw"
 	"math"
-
-	"golang.org/x/image/colornames"
 )
 
 type Mesh struct {
@@ -67,7 +66,7 @@ func (m Mesh) RotateZ(rotation float64) Mesh {
 	})
 }
 
-func (m Mesh) Draw(dst draw.Image) {
+func (m Mesh) DrawWithTexture(dst draw.Image, texture draw.Image) {
 	lightZ := 400.0
 	zbuffer := make([]float64, dst.Bounds().Dx()*dst.Bounds().Dy())
 	for i := range zbuffer {
@@ -92,4 +91,8 @@ func (m Mesh) Draw(dst draw.Image) {
 			}
 		}
 	}
+}
+
+func (m Mesh) Draw(dst draw.Image) {
+	m.DrawWithTexture(dst, nil)
 }
