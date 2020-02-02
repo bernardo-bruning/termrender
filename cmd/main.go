@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"image"
+	"image/png"
 	"os"
 	"time"
 
@@ -31,6 +32,17 @@ func run() {
 		panic(err)
 	}
 
+	pathTexture := os.Args[2]
+	fileTexture, err := os.Open(pathTexture)
+	if err != nil {
+		panic(err)
+	}
+
+	texture, err := png.Decode(fileTexture)
+	if err != nil {
+		panic(err)
+	}
+
 	model, err := obj.Load(file)
 	fmt.Println("Numbers of triangles", len(model.Triangles))
 	if err != nil {
@@ -42,7 +54,7 @@ func run() {
 	for !win.Closed() {
 		model = model.RotateY(0.01)
 		mesh := model.Mul(render.NewVector(-4, -4, 4)).Add(render.NewVector(400, 400, 0))
-		mesh.Draw(img)
+		mesh.DrawWithTexture(img, texture)
 		pixel.Render(win, img)
 		img = image.NewRGBA(image.Rect(0, 0, int(win.Bounds().W()), int(win.Bounds().H())))
 		fpsIterator++

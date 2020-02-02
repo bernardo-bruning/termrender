@@ -1,9 +1,11 @@
 package render
 
 import (
-	"golang.org/x/image/colornames"
+	"image"
 	"image/draw"
 	"math"
+
+	"golang.org/x/image/colornames"
 )
 
 type Mesh struct {
@@ -66,25 +68,33 @@ func (m Mesh) RotateZ(rotation float64) Mesh {
 	})
 }
 
-func (m Mesh) DrawWithTexture(dst draw.Image, texture draw.Image) {
+func (m Mesh) DrawWithTexture(dst draw.Image, texture image.Image) {
 	lightZ := 400.0
 	zbuffer := make([]float64, dst.Bounds().Dx()*dst.Bounds().Dy())
 	for i := range zbuffer {
 		zbuffer[i] = math.Inf(-1)
 	}
 
-	for _, triangle := range m.Triangles {
+	for i := range m.Triangles {
+		triangle := m.Triangles[i]
+		ttexture := m.TextureMapping[i]
 		bounds := triangle.Bounds()
 		for x := bounds.Min.X; x <= bounds.Max.X; x++ {
 			for y := bounds.Min.Y; y <= bounds.Max.Y; y++ {
 				point := Vector{X: float64(x), Y: float64(y), Z: 0}
 				bc := triangle.Barycentric(point)
 				z := bc.X*triangle.a.Z + bc.Y*triangle.b.Z + bc.Z*triangle.c.Z
+				xx := bc.X*ttexture.a.X + bc.Y*ttexture.b.X + bc.Z*ttexture.c.X
+				yy := bc.X*ttexture.a.Y + bc.Y*ttexture.b.Y + bc.Z*ttexture.c.Y
 				if bc.X >= 0 && bc.Y >= 0 && bc.Z >= 0 {
 					if z > zbuffer[y+x*dst.Bounds().Dy()] {
 						color := colornames.Black
 						color.B += uint8(z/2 + lightZ)
-						dst.Set(point.ToPointer().X, point.ToPointer().Y, color)
+						if texture == nil {
+							dst.Set(point.ToPointer().X, point.ToPointer().Y, color)
+						} else {
+							dst.Set(x, y, texture.At(int((xx)*float64(texture.Bounds().Dx())), int((1-yy)*float64(texture.Bounds().Dy()))))
+						}
 						zbuffer[y+x*dst.Bounds().Dy()] = z
 					}
 				}
