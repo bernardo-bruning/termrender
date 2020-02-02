@@ -9,6 +9,29 @@ import (
 	"strings"
 )
 
+func loadVector(values []string) (render.Vector, error) {
+	if len(values) < 4 {
+		return render.Vector{}, errors.New("Invalid load vertice")
+	}
+
+	x, err := strconv.ParseFloat(values[1], 64)
+	if err != nil {
+		return render.Vector{}, err
+	}
+
+	y, err := strconv.ParseFloat(values[2], 64)
+	if err != nil {
+		return render.Vector{}, err
+	}
+
+	z, err := strconv.ParseFloat(values[3], 64)
+	if err != nil {
+		return render.Vector{}, err
+	}
+
+	return render.Vector{x, y, z}, nil
+}
+
 //Load return a mesh from file obj
 func Load(r io.Reader) (render.Mesh, error) {
 	scanner := bufio.NewScanner(r)
@@ -22,26 +45,11 @@ func Load(r io.Reader) (render.Mesh, error) {
 
 		obj := strings.Split(line, " ")
 		if strings.EqualFold(obj[0], "v") {
-			if len(obj) < 4 {
-				return render.Mesh{}, errors.New("Invalid load vertice")
-			}
-
-			x, err := strconv.ParseFloat(obj[1], 64)
+			vector, err := loadVector(obj)
 			if err != nil {
 				return render.Mesh{}, err
 			}
-
-			y, err := strconv.ParseFloat(obj[2], 64)
-			if err != nil {
-				return render.Mesh{}, err
-			}
-
-			z, err := strconv.ParseFloat(obj[3], 64)
-			if err != nil {
-				return render.Mesh{}, err
-			}
-
-			vectors = append(vectors, render.Vector{x, y, z})
+			vectors = append(vectors, vector)
 		}
 
 		if strings.EqualFold(obj[0], "f") {
