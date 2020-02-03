@@ -18,7 +18,7 @@ import (
 func run() {
 	cfg := pixelgl.WindowConfig{
 		Title:  "Term render",
-		Bounds: p.R(0, 0, 800, 800),
+		Bounds: p.R(0, 0, 800, 500),
 		VSync:  true,
 	}
 	win, err := pixelgl.NewWindow(cfg)
