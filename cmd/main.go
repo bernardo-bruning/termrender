@@ -17,7 +17,7 @@ import (
 
 func run() {
 	cfg := pixelgl.WindowConfig{
-		Title:  "Term render",
+		Title:  "Termrender",
 		Bounds: p.R(0, 0, 800, 500),
 		VSync:  true,
 	}
